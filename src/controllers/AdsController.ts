@@ -81,34 +81,6 @@ async function findById(req: Request, res: Response) {
     }
 }
 
-// // When the request is for the /ads resource, we return an array of objects 
-// async function findById(req: Request, res: Response) {
-//     let gameId = req.params.id
-//     let ads = await prisma.ad.findMany({
-//         select: {
-//             id: true,
-//             name: true,
-//             weekDays: true,
-//             useVoiceChannel: true,
-//             yearsPlaying: true,
-//             hourStart: true,
-//             hourEnd: true
-//         },
-//         where: {
-//             gameId
-//         }
-//     })
-
-//     return res.json(ads.map(ad => (
-//         {
-//             ...ad,
-//             weekDays: ad.weekDays.split(","),
-//             hourStart: convertMinutesToHour(ad.hourStart),
-//             hourEnd: convertMinutesToHour(ad.hourEnd)
-//         }
-//     )))
-
-// }
 
 // // Retrieve discord using ad's id
 // async function getDiscordById(req: Request, res: Response) {
