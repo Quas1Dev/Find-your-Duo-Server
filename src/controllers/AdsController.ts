@@ -24,6 +24,7 @@ async function findAllGames(req: Request, res: Response) {
     }
 }
 
+// Create a new ad for a given game
 async function createNewAd(req: Request, res: Response) {
     const gameId = req.params.id;
     const { name, yearsPlaying, discord, weekDays, hourStart, hourEnd, useVoiceChannel } = req.body;
@@ -53,6 +54,29 @@ async function createNewAd(req: Request, res: Response) {
         return res.status(500).json({
             err: "Error while adding the new ad.",
             message: err.message,
+        })
+    }
+}
+
+// When the request is for the /ads resource, we return an array of objects 
+async function findById(req: Request, res: Response) {
+    let gameId = req.params.id
+
+    try {
+        const query = `SELECT * FROM ads WHERE gameId = $1`;
+        const result = await client.query(query, [gameId]);
+        const hoursConvertedResult = result.rows.map(ad => ({
+            ...ad,
+            hourstart: convertHourStringToMinutes(ad.hourstart),
+            hoursnd: convertHourStringToMinutes(ad.hourend),
+        }))
+
+        console.log(hoursConvertedResult);
+        return res.status(200).json(result);
+    } catch (err: any) {
+        return res.status(500).json({
+            err: "Coudn't run query",
+            message: err.message
         })
     }
 }
@@ -112,5 +136,6 @@ async function createNewAd(req: Request, res: Response) {
 
 export {
     findAllGames,
-    createNewAd
+    createNewAd,
+    findById
 }
