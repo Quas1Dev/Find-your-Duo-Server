@@ -107,6 +107,14 @@ async function seedAds() {
     "16:00",
     "18:00",
     false,
+    'd30d4d91-d6f3-4056-bd11-55708e14a514',
+    'Jimbo',
+    8,
+    'jhegson miru#1548',
+    [0,1],
+    "16:50",
+    "18:00",
+    true,
   ];
   const result = await client.query(queryText, values);
   return result
