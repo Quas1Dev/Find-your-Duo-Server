@@ -41,7 +41,7 @@ async function createNewAd(req: Request, res: Response) {
         discord) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
     `
 
-    const values = [gameId, useVoiceChannel, yearsPlaying, weekDays, hourStart, hourEnd, name, discord];
+    const values = [gameId, useVoiceChannel, yearsPlaying, weekDays, convertMinutesToHour(hourStart), convertMinutesToHour(hourEnd), name, discord];
 
     try {
         const result = await client.query(query, values);
@@ -80,33 +80,28 @@ async function findById(req: Request, res: Response) {
     }
 }
 
+// Retrieve discord using ad's id
+async function getDiscordById(req: Request, res: Response) {
+    let adId = req.params.id
+    try {
+        const query = `SELECT discord FROM ads WHERE id = $1`;
+        const result = await client.query(query, [adId]);
 
-// // Retrieve discord using ad's id
-// async function getDiscordById(req: Request, res: Response) {
-//     let adId = req.params.id
-
-//     let ad = await prisma.ad.findUniqueOrThrow({
-//         select: {
-//             discord: true
-//         },
-//         where: {
-//             id: adId
-//         }
-//     })
-
-//     return res.json(ad)
-// }
-
-
-// export {
-//     findAllGames,
-//     createNewAd,
-//     findById,
-//     getDiscordById,
-// }
+        console.log(result.rows[0].discord);
+        return res.status(200).json({
+            discord: result.rows[0].discord,
+        });
+    } catch (err : any){
+        return res.status(500).json({
+            err: "Coudn't retrieve discord.",
+            message: err.message,
+        });
+    }
+}
 
 export {
     findAllGames,
     createNewAd,
-    findById
+    findById,
+    getDiscordById
 }
