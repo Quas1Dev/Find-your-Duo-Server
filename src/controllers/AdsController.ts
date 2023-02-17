@@ -71,8 +71,7 @@ async function findById(req: Request, res: Response) {
             hoursnd: convertHourStringToMinutes(ad.hourend),
         }))
 
-        console.log(hoursConvertedResult);
-        return res.status(200).json(result);
+        return res.status(200).json(hoursConvertedResult);
     } catch (err: any) {
         return res.status(500).json({
             err: "Coudn't run query",
