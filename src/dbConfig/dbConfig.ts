@@ -2,7 +2,7 @@ import { Client } from 'pg';
 
 const client = new Client({
     host: 'localhost',
-    port: 5432,
+    port: 3350,
     user: 'fernando',
     password: 'nlw',
     database: 'nlw'
