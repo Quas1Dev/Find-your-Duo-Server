@@ -10,31 +10,52 @@ import client from '../dbConfig/dbConfig';
 
 // Returns all games + amount of ads for each of them
 async function findAllGames(req: Request, res: Response) {
-    client.query("SELECT * FROM games", (err, results) => {
-        if (err) throw err;
-        return res.json(results.rows);
-    });
+    try {
+        const results = await client.query(`SELECT g.id, g.title, g.thumb, COUNT(a.gameId) AS num_ads
+                  FROM games g
+                  LEFT JOIN ads a ON g.id = a.gameId
+                  GROUP BY g.id`);
+        return res.status(200).json(results.rows);
+    } catch (err: any) {
+        return res.status(500).json({
+            err: "Couldn't load games data.",
+            message: err.message,
+        })
+    }
 }
 
-// async function createNewAd(req: Request, res: Response) {
-//     const gameId = req.params.id;
-//     const body: any = req.body;
+async function createNewAd(req: Request, res: Response) {
+    const gameId = req.params.id;
+    const { name, yearsPlaying, discord, weekDays, hourStart, hourEnd, useVoiceChannel } = req.body;
 
-//     const ad = await prisma.ad.create({
-//         data: {
-//             gameId,
-//             "name": body.name,
-//             "yearsPlaying": body.yearsPlaying,
-//             "discord": body.discord,
-//             "weekDays": body.weekDays.join(","),
-//             "hourStart": convertHourStringToMinutes(body.hourStart),
-//             "hourEnd": convertHourStringToMinutes(body.hourEnd),
-//             "useVoiceChannel": body.useVoiceChannel
-//         }
-//     })
+    const query = `
+    INSERT INTO ads ( 
+        gameid,
+        usevoicechannel,
+        yearsplaying,
+        weekdays,
+        hourstart,
+        hourend,
+        name,
+        discord) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+    `
 
-//     return res.status(201).json(ad)
-// }
+    const values = [gameId, useVoiceChannel, yearsPlaying, weekDays, hourStart, hourEnd, name, discord];
+
+    try {
+        const result = await client.query(query, values);
+        console.log(result);
+        return res.status(201).json({
+            roucount: result.rowCount
+        });
+
+    } catch (err: any) {
+        return res.status(500).json({
+            err: "Error while adding the new ad.",
+            message: err.message,
+        })
+    }
+}
 
 // // When the request is for the /ads resource, we return an array of objects 
 // async function findById(req: Request, res: Response) {
@@ -90,5 +111,6 @@ async function findAllGames(req: Request, res: Response) {
 // }
 
 export {
-    findAllGames
+    findAllGames,
+    createNewAd
 }
