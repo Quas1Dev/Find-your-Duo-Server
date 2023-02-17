@@ -75,7 +75,7 @@ async function findById(req: Request, res: Response) {
     } catch (err: any) {
         return res.status(500).json({
             err: "Coudn't run query",
-            message: err.message
+            message: err.message,
         })
     }
 }
