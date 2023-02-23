@@ -11,7 +11,8 @@ import client from '../dbConfig/dbConfig';
 // Returns all games + amount of ads for each of them
 async function findAllGames(req: Request, res: Response) {
     try {
-        const results = await client.query(`SELECT g.id, g.title, g.thumb, COUNT(a.gameId) AS num_ads
+        const results = await client.query(`
+                  SELECT g.id, g.title, g.thumb, COUNT(a.gameId) AS num_ads
                   FROM games g
                   LEFT JOIN ads a ON g.id = a.gameId
                   GROUP BY g.id`);
@@ -40,16 +41,14 @@ async function createNewAd(req: Request, res: Response) {
         name,
         discord) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
     `
-
     const values = [gameId, useVoiceChannel, yearsPlaying, weekDays, convertMinutesToHour(hourStart), convertMinutesToHour(hourEnd), name, discord];
 
     try {
         const result = await client.query(query, values);
-        console.log(result);
+        const { rowCount } = result;
         return res.status(201).json({
-            roucount: result.rowCount
+            rowCount
         });
-
     } catch (err: any) {
         return res.status(500).json({
             err: "Error while adding the new ad.",
@@ -91,7 +90,7 @@ async function getDiscordById(req: Request, res: Response) {
         return res.status(200).json({
             discord: result.rows[0].discord,
         });
-    } catch (err : any){
+    } catch (err: any) {
         return res.status(500).json({
             err: "Coudn't retrieve discord.",
             message: err.message,
