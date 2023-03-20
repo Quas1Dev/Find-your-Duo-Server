@@ -67,7 +67,7 @@ async function findById(req: Request, res: Response) {
         const hoursConvertedResult = result.rows.map(ad => ({
             ...ad,
             hourstart: convertHourStringToMinutes(ad.hourstart),
-            hoursnd: convertHourStringToMinutes(ad.hourend),
+            hourend: convertHourStringToMinutes(ad.hourend),
         }))
 
         return res.status(200).json(hoursConvertedResult);
