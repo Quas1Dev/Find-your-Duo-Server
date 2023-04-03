@@ -39,7 +39,7 @@ async function seedGames() {
 
   const values = [
     'Call of Duty',
-    'https://static-cdn.jtvnw.net/ttv-boxart/1494_IGDB-144x192.jpg',
+    'https://static-cdn.jtvnw.net/ttv-boxart/1494_IGDB-188x250.jpg',
     'Grand Theft Auto',
     'https://static-cdn.jtvnw.net/ttv-boxart/32982_IGDB-188x250.jpg',
     'League of Legends',
@@ -68,7 +68,7 @@ async function seedAds() {
 `;
 
   const values = [
-    'd30d4d91-d6f3-4056-bd11-55708e14a514',
+    '0f9a01db-5188-4e55-a46a-fa6a6f8d407d',
     'Eleementary',
     3,
     'fernando bonfim#1548',
@@ -100,7 +100,7 @@ async function seedAds() {
     "16:00",
     "18:00",
     false,
-    '09a322e4-1326-45cc-9db8-f008582b842d',
+    '0f9a01db-5188-4e55-a46a-fa6a6f8d407d',
     'Destrutivo',
     8,
     'edward el erico#1548',
@@ -108,7 +108,7 @@ async function seedAds() {
     "16:00",
     "18:00",
     false,
-    'd30d4d91-d6f3-4056-bd11-55708e14a514',
+    'aa093205-80b1-4d7b-bcd3-5fca50085cce',
     'Jimbo',
     8,
     'jhegson miru#1548',
