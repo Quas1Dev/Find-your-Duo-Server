@@ -41,7 +41,7 @@ async function createNewAd(req: Request, res: Response) {
         name,
         discord) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
     `
-    const values = [gameId, useVoiceChannel, yearsPlaying, weekDays, convertMinutesToHour(hourStart), convertMinutesToHour(hourEnd), name, discord];
+    const values = [gameId, useVoiceChannel, yearsPlaying, weekDays, hourStart, hourEnd, name, discord];
 
     try {
         const result = await client.query(query, values);
@@ -66,8 +66,8 @@ async function findById(req: Request, res: Response) {
         const result = await client.query(query, [gameId]);
         const hoursConvertedResult = result.rows.map(ad => ({
             ...ad,
-            hourstart: convertHourStringToMinutes(ad.hourstart),
-            hourend: convertHourStringToMinutes(ad.hourend),
+            hourstart: ad.hourstart,
+            hourend: ad.hourend,
         }))
 
         return res.status(200).json(hoursConvertedResult);
