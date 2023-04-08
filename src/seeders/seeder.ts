@@ -56,6 +56,9 @@ async function seedGames() {
 }
 
 async function seedAds() {
+  const selectResult = await client.query(`SELECT g.id FROM games g`);
+  const ids = selectResult.rows;
+
   const queryText = `
   INSERT INTO ads (gameId, name, yearsplaying, discord, weekdays, hourstart, hourend, usevoicechannel)
   VALUES ($1, $2, $3, $4, $5, $6, $7, $8),
@@ -66,55 +69,56 @@ async function seedAds() {
          ($41, $42, $43, $44, $45, $46, $47, $48)
   RETURNING name, yearsplaying, discord, weekdays, hourstart, hourend, usevoicechannel
 `;
+  
 
   const values = [
-    '0f9a01db-5188-4e55-a46a-fa6a6f8d407d',
+    ids[0].id,
     'Eleementary',
     3,
     'fernando bonfim#1548',
     [0,1],
-    "16:00",
-    "18:00",
+    "16:00:00",
+    "18:00:00",
     true,
-    '2ff167e4-c14a-4284-8c6e-f681b81ad89e',
+    ids[0].id,
     'Genocida',
     3,
     'macaquinho internado#1548',
     [3,4],
-    "16:00",
-    "18:00",
+    "16:00:00",
+    "18:00:00",
     true,
-    '264b530d-7023-41c0-85f7-fa0bf1ba951a',
+    ids[1].id,
     'O Inglês do Mal',
     5,
     'zech muller#1548',
     [0,1],
-    "16:00",
-    "18:00",
+    "16:00:00",
+    "18:00:00",
     true,    
-    'aa093205-80b1-4d7b-bcd3-5fca50085cce',
+    ids[2].id,
     'Sem PC',
     8,
     'zech silva#1548',
     [2,5,6],
-    "16:00",
-    "18:00",
+    "16:00:00",
+    "18:00:00",
     false,
-    '0f9a01db-5188-4e55-a46a-fa6a6f8d407d',
+    ids[3].id,
     'Destrutivo',
     8,
     'edward el erico#1548',
     [1, 2, 3, 4],
-    "16:00",
-    "18:00",
+    "16:00:00",
+    "18:00:00",
     false,
-    'aa093205-80b1-4d7b-bcd3-5fca50085cce',
+    ids[4].id,
     'Jimbo',
     8,
     'jhegson miru#1548',
     [0,1],
-    "16:50",
-    "18:00",
+    "16:50:00",
+    "18:00:00",
     true,
   ];
   const result = await client.query(queryText, values);
